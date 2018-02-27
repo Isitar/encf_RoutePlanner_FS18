@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
@@ -21,7 +23,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         public override string ToString()
         {
-            return $"WayPoint: {(string.IsNullOrEmpty(Name) ? "" : Name + " ")}{Latitude:F2}/{Longitude:F2}";
+            return FormattableString.Invariant($"WayPoint: {(string.IsNullOrEmpty(Name) ? "" : Name + " ")}{Latitude:F2}/{Longitude:F2}");
         }
 
         /// <summary>
