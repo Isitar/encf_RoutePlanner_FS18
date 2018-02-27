@@ -23,7 +23,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         public override string ToString()
         {
-            return FormattableString.Invariant($"WayPoint: {(string.IsNullOrEmpty(Name) ? "" : Name + " ")}{Latitude:F2}/{Longitude:F2}");
+            return FormattableString.Invariant($"WayPoint: {(string.IsNullOrEmpty(Name) ? string.Empty : $"{Name} ")}{Latitude:F2}/{Longitude:F2}");
         }
 
         /// <summary>
