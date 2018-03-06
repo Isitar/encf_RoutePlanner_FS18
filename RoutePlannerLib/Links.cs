@@ -1,9 +1,6 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Threading;
-using System.Linq;
-using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {

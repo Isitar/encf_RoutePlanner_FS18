@@ -11,7 +11,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
     public class Cities
     {
-        private List<City> cities = new List<City>();
+        private readonly List<City> cities = new List<City>();
         public int ReadCities(string filename)
         {
             int counter = 0;
@@ -39,30 +39,29 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             set => cities[x] = value;
         }
 
-        public City this[string searchTerm]
+        public  City this[string searchTerm]
         {
             get
             {
-                var previousCulture = Thread.CurrentThread.CurrentCulture;
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                try
+                // lock because of culture
+                lock (this)
                 {
-                    if (string.IsNullOrEmpty(searchTerm))
+                    var previousCulture = Thread.CurrentThread.CurrentCulture;
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                    try
                     {
-                        throw new ArgumentNullException();
-                    }
+                        if (string.IsNullOrEmpty(searchTerm))
+                        {
+                            throw new ArgumentNullException();
+                        }
 
-                    var foundCity = cities.Find((c) => string.CompareOrdinal(c.Name.ToUpper(), searchTerm.ToUpper()) == 0);
-                    if (foundCity == null)
+                        return cities.Find((c) => string.CompareOrdinal(c.Name.ToUpper(), searchTerm.ToUpper()) == 0) ??
+                               throw new KeyNotFoundException();
+                    }
+                    finally
                     {
-                        throw new KeyNotFoundException();
+                        Thread.CurrentThread.CurrentCulture = previousCulture;
                     }
-
-                    return foundCity;
-                }
-                finally
-                {
-                    Thread.CurrentThread.CurrentCulture = previousCulture;
                 }
             }
         }
