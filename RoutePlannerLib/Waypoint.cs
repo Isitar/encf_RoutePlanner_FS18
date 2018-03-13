@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,5 +49,9 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {
             return (Math.PI / 180) * deg;
         }
+
+        public static WayPoint operator +(WayPoint p1, WayPoint p2) => new WayPoint(p1.Name, p1.Latitude + p2.Latitude, p1.Longitude + p2.Longitude);
+        public static WayPoint operator -(WayPoint p1, WayPoint p2) => new WayPoint(p1.Name, p1.Latitude - p2.Latitude, p1.Longitude - p2.Longitude);
+
     }
 }
