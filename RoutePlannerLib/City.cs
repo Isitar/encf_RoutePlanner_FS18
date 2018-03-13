@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
@@ -18,7 +20,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             Name = name;
             Country = country;
             Population = population;
-            Location = new WayPoint(Name,latitude,longitude);
+            Location = new WayPoint(Name, latitude, longitude);
         }
 
         public override bool Equals(object obj)
@@ -28,9 +30,14 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         public bool Equals(City other)
         {
-            return other != null &&
-                   Name == other.Name &&
-                   Country == other.Country;
+            var oldCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            var retVal = other != null &&
+                             Name.ToUpper().Equals(other.Name.ToUpper()) &&
+                             Country.ToUpper().Equals(other.Country.ToUpper());
+
+            Thread.CurrentThread.CurrentCulture = oldCulture;
+            return retVal;
         }
 
         public static bool operator ==(City city1, City city2)
