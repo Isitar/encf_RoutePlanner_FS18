@@ -40,6 +40,14 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             return retVal;
         }
 
+        public override int GetHashCode()
+        {
+            var hashCode = 622225511;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name.ToUpper());
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Country.ToUpper());
+            return hashCode;
+        }
+
         public static bool operator ==(City city1, City city2)
         {
             return EqualityComparer<City>.Default.Equals(city1, city2);

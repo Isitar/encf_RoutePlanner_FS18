@@ -115,20 +115,21 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         private IEnumerable<Link> FindLinksToCitiesEnRoute(List<City> citiesEnRoute)
         {
-            foreach (var city in citiesEnRoute)
+            for (int i = 1; i < citiesEnRoute.Count ; i ++)
             {
-                foreach (var link in links.Where(l => l.ToCity.Equals(city)))
-                {
-                    yield return link;
-                }
+                var fromCity = citiesEnRoute[i - 1];
+                var toCity = citiesEnRoute[i];
+                yield return links.First(l => (l.FromCity.Equals(fromCity) && l.ToCity.Equals(toCity)) ||
+                                              (l.FromCity.Equals(toCity) && l.ToCity.Equals(fromCity)));
             }
+           
         }
 
         private IEnumerable<Link> FindAllLinksForCity(City curVisitingCity, TransportMode mode)
         {
             return links.Where(l =>
-                (l.FromCity.Equals(curVisitingCity) || l.ToCity.Equals(curVisitingCity)) &&
-                l.TransportMode.Equals(mode));
+                (l.FromCity.Equals(curVisitingCity) || l.ToCity.Equals(curVisitingCity))&&
+                l.TransportMode.Equals(mode)).Distinct();
         }
 
 
