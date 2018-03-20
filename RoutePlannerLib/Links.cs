@@ -134,11 +134,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         public City[] FindCities(TransportMode transportMode) =>
             links.Where(l => l.TransportMode.Equals(transportMode))
-                .Aggregate(new List<City>(), (accumulated, l) =>
-                 {
-                     accumulated.AddRange(new List<City> { l.FromCity, l.ToCity });
-                     return accumulated;
-                 })
+                .SelectMany(l => new List<City> { l.FromCity, l.ToCity })
                 .Distinct()
                 .ToArray();
 
