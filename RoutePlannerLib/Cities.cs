@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
@@ -15,15 +16,19 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public int ReadCities(string filename)
         {
             int counter = 0;
-            var lines = File.ReadAllLines(filename);
-
-            foreach (var line in lines)
+            using (var textReader = File.OpenText(filename))
             {
-                var splitted = line.Split('\t');
-                cities.Add(new City(splitted[0], splitted[1], Convert.ToInt32(splitted[2]), Convert.ToDouble(splitted[3]), Convert.ToDouble(splitted[4])));
-                counter++;
+                var splittedLines = textReader.GetSplittedLines('\t');
+
+                foreach (var splitted in splittedLines)
+                {
+                    cities.Add(new City(splitted[0], splitted[1], Convert.ToInt32(splitted[2]),
+                        Convert.ToDouble(splitted[3]), Convert.ToDouble(splitted[4])));
+                    counter++;
+                }
+
+                return counter;
             }
-            return counter;
         }
 
         public City this[int x]
@@ -39,7 +44,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             set => cities[x] = value;
         }
 
-        public  City this[string searchTerm]
+        public City this[string searchTerm]
         {
             get
             {

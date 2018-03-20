@@ -109,5 +109,11 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
             {
             }
         }
+
+        [TestMethod]
+        public void TestIfSplittedLineMethodIsCalled()
+        {
+            TestHelpers.CheckForMethodCallInMethod("../../../RoutePlannerLib/Links.cs", "ReadLinks", "GetSplittedLines");
+        }
     }
- }
+}

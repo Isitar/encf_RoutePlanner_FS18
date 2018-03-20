@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="CitiesTest_Lab2.cs" />
     <Compile Include="CitiesTest_Lab3.cs" />
+    <Compile Include="CitiesTest_Lab4.cs" />
     <Compile Include="CityTest_Lab2.cs" />
     <Compile Include="CityTest_Lab4.cs" />
     <Compile Include="Lab4Test.cs" />

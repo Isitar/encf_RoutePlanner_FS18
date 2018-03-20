@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
@@ -40,13 +41,12 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public int ReadLinks(string filename)
         {
             var previousCount = Count;
-            using (var reader = new StreamReader(filename))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    var tokens = line.Split('\t');
 
+            using (var tr = File.OpenText(filename))
+            {
+                var tokenLines = tr.GetSplittedLines('\t');
+                foreach (var tokens in tokenLines)
+                {
                     try
                     {
                         var city1 = cities[tokens[0]];

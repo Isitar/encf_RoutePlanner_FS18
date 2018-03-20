@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -26,6 +28,27 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
             {
                 var name = methodInfo.Name.Replace("get_", string.Empty).Replace("set_", string.Empty).Replace("<", string.Empty);
                 Assert.IsTrue(char.IsUpper(name.First()), $"Method {name} on class {type.Name} does not start with upper case.");
+            }
+        }
+
+        public static void CheckForMethodCallInMethod(string filename, string callingMethod, string calledMethod)
+        {
+            using (TextReader reader = new StreamReader(filename))
+            {
+                List<string> sourceCode = ReadFileContentAsEnumerable(reader).ToList<string>();
+                //var query = from line in ReadFileContentAsEnumerable(reader); //skip header row
+
+                Assert.IsTrue(sourceCode.Where (l => l.Contains(calledMethod)).Count() > 0);
+
+            }
+        }
+
+        public static IEnumerable<string> ReadFileContentAsEnumerable(TextReader reader)
+        {
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                yield return line;
             }
         }
     }
