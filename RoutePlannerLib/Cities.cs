@@ -15,19 +15,15 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         private readonly List<City> cities = new List<City>();
         public int ReadCities(string filename)
         {
-            int counter = 0;
+
             using (var textReader = File.OpenText(filename))
             {
                 var splittedLines = textReader.GetSplittedLines('\t');
-
-                foreach (var splitted in splittedLines)
-                {
-                    cities.Add(new City(splitted[0], splitted[1], Convert.ToInt32(splitted[2]),
-                        Convert.ToDouble(splitted[3]), Convert.ToDouble(splitted[4])));
-                    counter++;
-                }
-
-                return counter;
+                var converted = splittedLines.Select(sl => new City(sl[0], sl[1], Convert.ToInt32(sl[2]),
+                    Convert.ToDouble(sl[3]), Convert.ToDouble(sl[4]))).ToList();
+                cities.AddRange(converted);
+               
+                return converted.Count();
             }
         }
 

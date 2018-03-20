@@ -132,6 +132,15 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 l.TransportMode.Equals(mode)).Distinct();
         }
 
+        public City[] FindCities(TransportMode transportMode) =>
+            links.Where(l => l.TransportMode.Equals(transportMode))
+                .Aggregate(new List<City>(), (accumulated, l) =>
+                 {
+                     accumulated.AddRange(new List<City> { l.FromCity, l.ToCity });
+                     return accumulated;
+                 })
+                .Distinct()
+                .ToArray();
 
         private class DijkstraNode : IComparable<DijkstraNode>
         {
@@ -143,6 +152,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             {
                 return other.Distance.CompareTo(Distance);
             }
+
         }
 
     }

@@ -35,21 +35,56 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
         {
             using (TextReader reader = new StreamReader(filename))
             {
-                List<string> sourceCode = ReadFileContentAsEnumerable(reader).ToList<string>();
-                //var query = from line in ReadFileContentAsEnumerable(reader); //skip header row
-
-                Assert.IsTrue(sourceCode.Where (l => l.Contains(calledMethod)).Count() > 0);
+                string sourceCode = reader.ReadToEnd();
+                string method = GetMethodFromCode(sourceCode, callingMethod);
+                Assert.IsTrue(method.Contains(calledMethod));
 
             }
         }
 
-        public static IEnumerable<string> ReadFileContentAsEnumerable(TextReader reader)
+        public static string GetMethodFromCode(string code, string methodName)
         {
-            string line;
-            while ((line = reader.ReadLine()) != null)
+            string method;
+
+            method = code.Substring(code.IndexOf(methodName));
+            method = method.Substring(0, FindIndexOfMethodEnd(method));
+
+            return method;
+        }
+
+        static int FindIndexOfMethodEnd(string methodBegin)
+        {
+            int startIndex = methodBegin.IndexOf('{');
+            int openBraces = 0;
+
+            for (int i = startIndex; i < methodBegin.Length; i++)
             {
-                yield return line;
+                if (methodBegin[i] == '{') openBraces++;
+                if (methodBegin[i] == '}') openBraces--;
+
+                if (openBraces == 0) return i+1;
+
             }
+
+            return methodBegin.Length;
+        }
+
+        /// <summary>
+        /// Simple test if a method is a single liner making a LINQ call (opcode 40)
+        /// </summary>
+        /// <param name="methodInfo">the method to check</param>
+        public static void CheckForSingleLineLinqUsage(MethodInfo methodInfo)
+        {
+            Assert.IsTrue(methodInfo.GetMethodBody().LocalVariables.Count <= 2,
+                "Implement the method FindCities as a single-line LINQ statement in the form \"return [LINQ];\".");
+
+            // some more not very sophisticated tests to ensure LINQ has been used
+            MethodBody mb = methodInfo.GetMethodBody();
+            // the method should be smaller than 100 IL byte instructions
+            Assert.IsTrue(mb.GetILAsByteArray().Length < 100);
+            // and it should contain two "call" ops (to LINQ)
+            Assert.IsTrue(mb.GetILAsByteArray().ToList().Contains(40));
+            //TODO: verify that a call to LINQ method is done
         }
     }
 }
