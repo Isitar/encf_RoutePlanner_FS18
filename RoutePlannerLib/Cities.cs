@@ -90,7 +90,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /// <returns></returns>
         public int GetPopulationOfShortestCityNames()
         {
-            return 0;
+            return cities.OrderBy(c => c.Name.Length).Take(3).Select(c => c.Population).Aggregate((c, carry) => carry + c);
         }
     }
 }
