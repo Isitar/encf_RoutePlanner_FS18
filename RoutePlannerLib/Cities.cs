@@ -22,7 +22,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 var converted = splittedLines.Select(sl => new City(sl[0], sl[1], Convert.ToInt32(sl[2]),
                     Convert.ToDouble(sl[3]), Convert.ToDouble(sl[4]))).ToList();
                 cities.AddRange(converted);
-               
+
                 return converted.Count();
             }
         }
@@ -88,9 +88,13 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /// Wie gross ist die Bevölkerungszahl der drei Städte mit den kürzesten Städtenamen?
         /// </summary>
         /// <returns></returns>
-        public int GetPopulationOfShortestCityNames()
+        public int GetPopulationOfShortestCityNames() =>
+                cities.OrderBy(c => c.Name.Length).Take(3).Sum(c => c.Population);
+
+
+        public IEnumerable<City> GetCities()
         {
-            return cities.OrderBy(c => c.Name.Length).Take(3).Select(c => c.Population).Aggregate((c, carry) => carry + c);
+            return cities;
         }
     }
 }
