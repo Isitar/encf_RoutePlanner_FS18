@@ -151,5 +151,25 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         }
 
+        /// <summary>
+        /// Bei wie vielen Links treten die drei bevölkerungsreichsten Städte aller Cities in den Links als Start-Stadt auf?
+        /// </summary>
+        /// <returns></returns>
+        public int GetCountOfThreeBiggestCitiesInLinks()
+        {
+            var biggestCities = cities.FindBiggest(3).ToList();
+            return links.Where(l => biggestCities.Contains(l.FromCity)).Count();
+        }
+
+
+        /// <summary>
+        /// Bei wievielen Links treten die Städte mit den drei längsten Städtenamen in den Links insgesamt auf, entweder als Start- oder als Ziel-Stadt?
+        /// </summary>
+        /// <returns></returns>
+        public int GetCountOfThreeCitiesWithLongestNameInLinks()
+        {
+            var longestCities = cities.FindLongestName(3).ToList();
+            return links.Where(l => longestCities.Contains(l.FromCity) || longestCities.Contains(l.ToCity)).Count();
+        }
     }
 }

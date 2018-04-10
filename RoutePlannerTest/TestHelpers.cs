@@ -12,7 +12,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
     /// test during the labs.
     /// </summary>
     [TestClass]
-    class TestHelpers
+    public class TestHelpers
     {
         /// <summary>
         /// Checks if the methods of the passed type conform to the Microsoft coding convention
@@ -76,7 +76,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
         public static void CheckForSingleLineLinqUsage(MethodInfo methodInfo)
         {
             Assert.IsTrue(methodInfo.GetMethodBody().LocalVariables.Count <= 2,
-                "Implement the method FindCities as a single-line LINQ statement in the form \"return [LINQ];\".");
+                $"Implement the method {methodInfo.Name} as a single-line LINQ statement in the form \"return [LINQ];\".");
 
             // some more not very sophisticated tests to ensure LINQ has been used
             MethodBody mb = methodInfo.GetMethodBody();

@@ -73,5 +73,24 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {
             return cities.Where(c => c.Location.Distance(location) <= distance).ToList();
         }
+
+        public IEnumerable<City> FindBiggest(int n)
+        {
+            return cities.OrderByDescending(c => c.Population).Take(n);
+        }
+
+        public IEnumerable<City> FindLongestName(int n)
+        {
+            return cities.OrderByDescending(c => c.Name.Length).Take(n);
+        }
+
+        /// <summary>
+        /// Wie gross ist die Bevölkerungszahl der drei Städte mit den kürzesten Städtenamen?
+        /// </summary>
+        /// <returns></returns>
+        public int GetPopulationOfShortestCityNames()
+        {
+            return 0;
+        }
     }
 }
