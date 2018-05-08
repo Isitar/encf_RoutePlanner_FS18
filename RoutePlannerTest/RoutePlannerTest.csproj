@@ -60,6 +60,7 @@
     <Compile Include="LinksTest_Lab4.cs" />
     <Compile Include="LinksTest_Lab5.cs" />
     <Compile Include="LinksTest_Lab6.cs" />
+    <Compile Include="LinksTest_Lab7.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteRequestEventArgsTest_Lab3.cs" />
     <Compile Include="RouteRequestWatcher _Lab6.cs" />
