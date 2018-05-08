@@ -64,9 +64,9 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
             return Count - previousCount;
         }
-        public async Task<List<Link>> FindShortestRouteBetweenAsync(string fromCity, string toCity, TransportMode mode, IProgress<string> reportProgress = null)
+        public Task<List<Link>> FindShortestRouteBetweenAsync(string fromCity, string toCity, TransportMode mode, IProgress<string> reportProgress = null)
         {
-            return await Task.Run(() => FindShortestRouteBetween(fromCity, toCity, mode, reportProgress));
+            return Task.Run(() => FindShortestRouteBetween(fromCity, toCity, mode, reportProgress));
         }
 
         public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode, IProgress<string> reportProgress = null)
