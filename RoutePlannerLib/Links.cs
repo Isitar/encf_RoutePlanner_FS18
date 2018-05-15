@@ -125,17 +125,18 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public List<List<Link>> FindAllShortestRoutes()
         {
             var result = new ConcurrentBag<List<Link>>();
-            var allCities = cities.GetCities().AsParallel().Select(c => c.Name).ToList();
-            var transportModes = Enum.GetValues(typeof(TransportMode)).Cast<TransportMode>();
-
-            Parallel.ForEach(allCities, (source) =>
+            var allCities = cities.GetCities().Select(c => c.Name).ToList();
+            var transportModes = Enum.GetValues(typeof(TransportMode)).Cast<TransportMode>().ToList();
+            foreach (var source in allCities)
             {
-                Parallel.ForEach(allCities, destination =>
+                foreach (var destination in allCities)
                 {
-                    Parallel.ForEach(transportModes,
-                        transportMode => { result.Add(FindShortestRouteBetween(source, destination, transportMode)); });
-                });
-            });
+                    foreach (var transportMode in transportModes)
+                    {
+                        result.Add(FindShortestRouteBetween(source, destination, transportMode));
+                    }
+                }
+            }
             return result.ToList();
         }
 
