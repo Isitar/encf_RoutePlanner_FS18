@@ -198,7 +198,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             return links.Where(l => longestCities.Contains(l.FromCity) || longestCities.Contains(l.ToCity)).Count();
         }
 
-        public List<List<Link>> FindAllShortestRoutesParallel()
+        public List<List<Link>> FindAllShortestRoutesParallel2()
         {
             var result = new ConcurrentBag<List<Link>>();
             var allCities = cities.GetCities().AsParallel().Select(c => c.Name).ToList();
@@ -215,6 +215,22 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             });
 
             return result.ToList();
+        }
+
+        public List<List<Link>> FindAllShortestRoutesParallel()
+        {
+            var temp = cities.GetCities().Select(c => c.Name).ToList().AsParallel();
+            return temp
+                .SelectMany(from =>
+                    temp.SelectMany(to =>
+                        Enum.GetValues(typeof(TransportMode))
+                        .Cast<TransportMode>()
+                        .AsParallel()
+                        .Select(
+                            mode => FindShortestRouteBetween(from, to, mode)
+                        )
+                    )
+                ).ToList();
         }
     }
 }
