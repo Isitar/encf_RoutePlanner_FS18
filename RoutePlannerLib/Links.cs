@@ -126,7 +126,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {
             var result = new ConcurrentBag<List<Link>>();
             var allCities = cities.GetCities().AsParallel().Select(c => c.Name).ToList();
-            var transportModes = links.Select(l => l.TransportMode).Distinct();
+            var transportModes = Enum.GetValues(typeof(TransportMode)).Cast<TransportMode>();
 
             Parallel.ForEach(allCities, (source) =>
             {
@@ -202,14 +202,14 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {
             var result = new ConcurrentBag<List<Link>>();
             var allCities = cities.GetCities().AsParallel().Select(c => c.Name).ToList();
-            var transportModes = links.Select(l => l.TransportMode).Distinct();
-            allCities.AsParallel().Select(async source =>
+            var transportModes = Enum.GetValues(typeof(TransportMode)).Cast<TransportMode>();
+            allCities.AsParallel().ForAll(source =>
             {
                 foreach (var destination in allCities)
                 {
                     foreach (var transportMode in transportModes)
                     {
-                        result.Add(await FindShortestRouteBetweenAsync(source, destination, transportMode));
+                        result.Add(FindShortestRouteBetween(source, destination, transportMode));
                     }
                 }
             });
