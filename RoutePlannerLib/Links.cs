@@ -217,5 +217,21 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
             return result.ToList();
         }
+
+        public List<List<Link>> FindAllShortestRoutesParallel2()
+        {
+            var temp = cities.GetCities().Select(c => c.Name).ToList().AsParallel();
+            return temp
+                .SelectMany(from =>
+                    temp.SelectMany(to =>
+                        Enum.GetValues(typeof(TransportMode))
+                        .Cast<TransportMode>()
+                        .AsParallel()
+                        .Select(
+                            mode => FindShortestRouteBetween(from, to, mode)
+                        )
+                    )
+                ).ToList();
+        }
     }
 }
