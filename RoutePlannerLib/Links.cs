@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +74,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {
             reportProgress?.Report("call to method done");
             RouteRequested?.Invoke(this, new RouteRequestEventArgs(cities[fromCity], cities[toCity], mode));
-            
+
             //use dijkstra's algorithm to look for all single-source shortest paths
             var visited = new Dictionary<City, DijkstraNode>();
             var pending = new SortedSet<DijkstraNode>(new[]
@@ -84,7 +85,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     Distance = 0
                 }
             });
-            
+
             while (pending.Any())
             {
                 var cur = pending.Last();
@@ -119,6 +120,23 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             IEnumerable<Link> paths = FindLinksToCitiesEnRoute(citiesEnRoute);
             reportProgress?.Report("all paths as enum done");
             return paths.ToList();
+        }
+
+        public List<List<Link>> FindAllShortestRoutes()
+        {
+            var result = new ConcurrentBag<List<Link>>();
+            var allCities = cities.GetCities().AsParallel().Select(c => c.Name).ToList();
+            var transportModes = links.Select(l => l.TransportMode).Distinct();
+
+            Parallel.ForEach(allCities, (source) =>
+            {
+                Parallel.ForEach(allCities, destination =>
+                {
+                    Parallel.ForEach(transportModes,
+                        transportMode => { result.Add(FindShortestRouteBetween(source, destination, transportMode)); });
+                });
+            });
+            return result.ToList();
         }
 
         private IEnumerable<Link> FindLinksToCitiesEnRoute(List<City> citiesEnRoute)
@@ -178,6 +196,25 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {
             var longestCities = cities.FindLongestName(3).ToList();
             return links.Where(l => longestCities.Contains(l.FromCity) || longestCities.Contains(l.ToCity)).Count();
+        }
+
+        public List<List<Link>> FindAllShortestRoutesParallel()
+        {
+            var result = new ConcurrentBag<List<Link>>();
+            var allCities = cities.GetCities().AsParallel().Select(c => c.Name).ToList();
+            var transportModes = links.Select(l => l.TransportMode).Distinct();
+            allCities.AsParallel().Select(async source =>
+            {
+                foreach (var destination in allCities)
+                {
+                    foreach (var transportMode in transportModes)
+                    {
+                        result.Add(await FindShortestRouteBetweenAsync(source, destination, transportMode));
+                    }
+                }
+            });
+
+            return result.ToList();
         }
     }
 }
