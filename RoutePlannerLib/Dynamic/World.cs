@@ -1,16 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Dynamic
 {
-    public class World
+    public class World : DynamicObject
     {
-        public World(dynamic cities)
-        {
+        private Cities cities;
 
+        public World(Cities cities)
+        {
+            this.cities = cities;
+        }
+
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        {
+            try
+            {
+                result = cities[binder.Name];
+            }
+            catch (Exception)
+            {
+                result = $"The city \"{binder.Name}\" does not exist!";
+            }
+            return true;
         }
     }
 }

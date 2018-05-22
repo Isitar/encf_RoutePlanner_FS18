@@ -13,7 +13,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Export
         {
             var excelApp = new Application();
             excelApp.Visible = true;
-            
+            excelApp.DisplayAlerts = false;
+
             var workbook = (Microsoft.Office.Interop.Excel._Workbook)(excelApp.Workbooks.Add(""));
             var sheet = (Microsoft.Office.Interop.Excel._Worksheet)workbook.ActiveSheet;
 
@@ -22,7 +23,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Export
             sheet.Cells[1, 2].Value = "To";
             sheet.Cells[1, 3].Value = "Distance";
             sheet.Cells[1, 4].Value = "Mode";
-            
+
             // add lines
             var linkArr = links as Link[] ?? links.ToArray();
             for (int i = 0; i < linkArr.Count(); i++)
@@ -39,7 +40,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Export
             sheet.Range["A1", "D1"].Font.Bold = true;
             sheet.Range["A1", "D1"].Font.Size = 14;
 
-            workbook.SaveAs(fileName, XlFileFormat.xlWorkbookDefault,Type.Missing,Type.Missing, Type.Missing, Type.Missing, XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlLocalSessionChanges,Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            workbook.SaveAs(fileName, XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, Type.Missing, Type.Missing, XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             workbook.Close();
             excelApp.Quit();
         }
