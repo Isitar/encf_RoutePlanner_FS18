@@ -22,7 +22,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Dynamic
             {
                 result = cities[binder.Name];
             }
-            catch (Exception)
+            catch
             {
                 result = $"The city \"{binder.Name}\" does not exist!";
             }
