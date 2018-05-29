@@ -60,6 +60,7 @@
     <Compile Include="CitiesTest_Lab6.cs" />
     <Compile Include="CityTest_Lab2.cs" />
     <Compile Include="CityTest_Lab4.cs" />
+    <Compile Include="DeSerializerTest_Lab10.cs" />
     <Compile Include="DynamicWorldTest_Lab9.cs" />
     <Compile Include="ExcelExchangeTest_Lab9.cs" />
     <Compile Include="Lab4Test.cs" />

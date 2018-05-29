@@ -60,6 +60,8 @@
     </Compile>
     <Compile Include="RouteRequestEventArgs.cs" />
     <Compile Include="RouteRequestWatcher.cs" />
+    <Compile Include="Util\SimpleObjectReader.cs" />
+    <Compile Include="Util\SimpleObjectWriter.cs" />
     <Compile Include="Util\TextReaderExtensions.cs" />
     <Compile Include="Waypoint.cs" />
   </ItemGroup>

@@ -10,6 +10,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
     public class City : IEquatable<City>
     {
+        public City() { }
         public string Name { get; set; }
         public string Country { get; set; }
         public int Population { get; set; }
