@@ -5,6 +5,7 @@ using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Dynamic;
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
 {
     [TestClass]
+	[DeploymentItem("data/citiesTestDataLab2.txt")]
     public class DynamicWorldTest
     {
 
