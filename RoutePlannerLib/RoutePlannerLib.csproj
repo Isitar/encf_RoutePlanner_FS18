@@ -48,16 +48,28 @@
     <Compile Include="City.cs" />
     <Compile Include="Dynamic\World.cs" />
     <Compile Include="Export\ExcelExchange.cs" />
+    <Compile Include="ILinks.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="Links.cs" />
+    <Compile Include="LinksFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="RouteRequestEventArgs.cs" />
     <Compile Include="RouteRequestWatcher.cs" />
     <Compile Include="Util\TextReaderExtensions.cs" />
     <Compile Include="Waypoint.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -63,6 +63,7 @@
     <Compile Include="DynamicWorldTest_Lab9.cs" />
     <Compile Include="ExcelExchangeTest_Lab9.cs" />
     <Compile Include="Lab4Test.cs" />
+    <Compile Include="LinksFactoryTest_Lab10.cs" />
     <Compile Include="LinksTest_Lab3.cs" />
     <Compile Include="LinksTest_Lab4.cs" />
     <Compile Include="LinksTest_Lab5.cs" />

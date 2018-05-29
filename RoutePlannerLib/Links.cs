@@ -14,8 +14,11 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
     ///	<summary>
     ///	Manages	links from a city to another city.
     ///	</summary>
-    public class Links
+    public class Links : ILinks
     {
+        public Links()
+        {
+        }
         private List<Link> links = new List<Link>();
         private Cities cities;
         public event EventHandler<RouteRequestEventArgs> RouteRequested;
@@ -65,12 +68,16 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
             return Count - previousCount;
         }
+
+        public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode) =>
+            FindShortestRouteBetween(fromCity, toCity, mode, null);
+
         public Task<List<Link>> FindShortestRouteBetweenAsync(string fromCity, string toCity, TransportMode mode, IProgress<string> reportProgress = null)
         {
             return Task.Run(() => FindShortestRouteBetween(fromCity, toCity, mode, reportProgress));
         }
 
-        public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode, IProgress<string> reportProgress = null)
+        public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode, IProgress<string> reportProgress)
         {
             reportProgress?.Report("call to method done");
             RouteRequested?.Invoke(this, new RouteRequestEventArgs(cities[fromCity], cities[toCity], mode));
