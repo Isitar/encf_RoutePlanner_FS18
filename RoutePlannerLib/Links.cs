@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util;
 using System.Threading.Tasks;
 
@@ -139,6 +140,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     foreach (var transportMode in Enum.GetValues(typeof(TransportMode)).Cast<TransportMode>())
                     {
                         result.Add(FindShortestRouteBetween(source, destination, transportMode));
+                        Thread.Sleep(10);
                     }
                 }
             }
