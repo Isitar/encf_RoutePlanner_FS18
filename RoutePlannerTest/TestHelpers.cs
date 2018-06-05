@@ -31,15 +31,22 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
             }
         }
 
-        public static void CheckForMethodCallInMethod(string filename, string callingMethod, string calledMethod)
+        public static bool CheckForMethodCalledInMethod(string filename, string callingMethod, string calledMethod)
         {
             using (TextReader reader = new StreamReader(filename))
             {
                 string sourceCode = reader.ReadToEnd();
                 string method = GetMethodFromCode(sourceCode, callingMethod);
-                Assert.IsTrue(method.Contains(calledMethod));
-
+                return method.Contains(calledMethod);
             }
+
+        }
+
+        //TODO: Get rid of this method, use rathr the one above  (not Asserts here, this should only be used in the test code)
+
+        public static void CheckForMethodCallInMethod(string filename, string callingMethod, string calledMethod)
+        {
+            Assert.IsTrue(CheckForMethodCalledInMethod(filename, callingMethod, calledMethod));
         }
 
         public static string GetMethodFromCode(string code, string methodName)

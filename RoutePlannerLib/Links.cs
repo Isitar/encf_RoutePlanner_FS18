@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -17,6 +18,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
     ///	</summary>
     public class Links : ILinks
     {
+        private static readonly TraceSource TraceSource = new TraceSource(nameof(Links));
         public Links()
         {
         }
@@ -46,28 +48,40 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         ///	<returns>number	of read	route</returns>
         public int ReadLinks(string filename)
         {
-            var previousCount = Count;
-
-            using (var tr = File.OpenText(filename))
+            try
             {
-                var tokenLines = tr.GetSplittedLines('\t');
-                foreach (var tokens in tokenLines)
-                {
-                    try
-                    {
-                        var city1 = cities[tokens[0]];
-                        var city2 = cities[tokens[1]];
+                TraceSource.TraceInformation("ReadLinks started");
 
-                        links.Add(new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail));
-                    }
-                    catch (KeyNotFoundException)
+                var previousCount = Count;
+
+                using (var tr = File.OpenText(filename))
+                {
+                    var tokenLines = tr.GetSplittedLines('\t');
+                    foreach (var tokens in tokenLines)
                     {
-                        //missing cities should be ignored
+                        try
+                        {
+                            var city1 = cities[tokens[0]];
+                            var city2 = cities[tokens[1]];
+
+                            links.Add(new Link(city1, city2, city1.Location.Distance(city2.Location),
+                                TransportMode.Rail));
+                        }
+                        catch (KeyNotFoundException)
+                        {
+                            //missing cities should be ignored
+                        }
                     }
                 }
-            }
 
-            return Count - previousCount;
+                TraceSource.TraceInformation("ReadLinks ended");
+                return Count - previousCount;
+            }
+            catch (FileNotFoundException e)
+            {
+                TraceSource.TraceEvent(TraceEventType.Critical, 0, e.StackTrace);
+                throw e;
+            }
         }
 
         public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode) =>

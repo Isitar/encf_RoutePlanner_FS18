@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,18 +14,28 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
     public class Cities
     {
         private readonly List<City> cities = new List<City>();
+        private static readonly TraceSource TraceSource = new TraceSource(nameof(Cities));
         public int ReadCities(string filename)
         {
-
-            using (var textReader = File.OpenText(filename))
+            try
             {
-                var splittedLines = textReader.GetSplittedLines('\t');
-                var converted = splittedLines.Select(sl => new City(sl[0], sl[1], Convert.ToInt32(sl[2]),
-                    Convert.ToDouble(sl[3]), Convert.ToDouble(sl[4]))).ToList();
-                cities.AddRange(converted);
-
-                return converted.Count();
+                TraceSource.TraceInformation("ReadCities started");
+                using (var textReader = File.OpenText(filename))
+                {
+                    var splittedLines = textReader.GetSplittedLines('\t');
+                    var converted = splittedLines.Select(sl => new City(sl[0], sl[1], Convert.ToInt32(sl[2]),
+                        Convert.ToDouble(sl[3]), Convert.ToDouble(sl[4]))).ToList();
+                    cities.AddRange(converted);
+                    TraceSource.TraceInformation("ReadCities ended");
+                    return converted.Count;
+                }
             }
+            catch (FileNotFoundException e)
+            {
+                TraceSource.TraceEvent(TraceEventType.Critical, 0, e.StackTrace);
+                throw e;
+            }
+
         }
 
         public City this[int x]

@@ -53,6 +53,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppConfig_Lab11.cs" />
+    <Compile Include="CitiesTest_Lab11.cs" />
     <Compile Include="CitiesTest_Lab2.cs" />
     <Compile Include="CitiesTest_Lab3.cs" />
     <Compile Include="CitiesTest_Lab4.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="ExcelExchangeTest_Lab9.cs" />
     <Compile Include="Lab4Test.cs" />
     <Compile Include="LinksFactoryTest_Lab10.cs" />
+    <Compile Include="LinksTest_Lab11.cs" />
     <Compile Include="LinksTest_Lab3.cs" />
     <Compile Include="LinksTest_Lab4.cs" />
     <Compile Include="LinksTest_Lab5.cs" />
