@@ -33,7 +33,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             catch (FileNotFoundException e)
             {
                 TraceSource.TraceEvent(TraceEventType.Critical, 0, e.StackTrace);
-                throw e;
+                throw;
             }
 
         }
